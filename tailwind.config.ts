@@ -1,5 +1,3 @@
-import type { Config } from "tailwindcss";
-
 export default {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,11 +6,14 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        lobster: ["Lobster", "cursive"],
+      },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        customGold: "#FFCF82",
       },
     },
   },
   plugins: [],
-} satisfies Config;
+};
+ 
