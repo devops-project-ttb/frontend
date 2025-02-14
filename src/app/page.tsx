@@ -5,6 +5,8 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import NavBar from "../../components/NavBar";
 import FicheTechniqueModal from "../../components/FicheTechnique";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   const { isCameraOpen, photo, openCamera, setIsCameraOpen, setPhoto } = useCamera();
@@ -12,7 +14,7 @@ export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null); 
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false); // Etat pour afficher le modal
-
+  const [loading, setLoading] = useState(false); // Etat pour afficher le chargement
   // Fonction pour démarrer la caméra
   const startCamera = async () => {
     try {
@@ -67,7 +69,25 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center max-h-screen relative">
       <div className="absolute top-[70vh]">
-        <NavBar />
+      <nav className="relative flex px-[6vw] items-center h-[10vh] w-[80vw] bg-[#FFCF82] shadow-md rounded-[20px]">
+      <div className="flex justify-between items-center w-full mx-auto relative">
+        <Image src="/HomeIcon.svg" alt="Home Icon" width={32} height={32} />
+
+        <div className="absolute bottom-[-4.5vh] left-1/2 transform -translate-x-1/2 flex items-center justify-center w-[25vw] h-[14.5vh] rounded-full border-2 border-[#FFCF82] bg-white">
+          {loading ? (
+            <div className="text-center text-xl font-semibold">Chargement...</div>
+          ) : (
+            <Image src="/PhotoIcon.svg" alt="Photo Icon" width={50} height={50} onClick={openCamera} />
+          )}
+        </div>
+
+        <Link href="/profile">
+          <div className="flex items-center">
+            <Image src="/ProfileIcon.svg" alt="Profile Icon" width={40} height={40} />
+          </div>
+        </Link>
+      </div>
+    </nav>
       </div>  
 
       {!isCameraOpen && (
