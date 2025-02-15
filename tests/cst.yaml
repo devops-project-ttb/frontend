@@ -2,8 +2,8 @@
 schemaVersion: 2.0.0
 
 fileExistenceTests:
-    - name: dist directory
-      path: /dist
+    - name: next directory
+      path: /.next
       shouldExist: true
 
     - name : src directory
