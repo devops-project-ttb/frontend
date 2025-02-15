@@ -3,15 +3,27 @@ schemaVersion: 2.0.0
 
 fileExistenceTests:
     - name: next directory
-      path: /.next
+      path: /app/.next
       shouldExist: true
 
+    - name: node_modules directory
+      path: /app/node_modules
+      shouldExist: true
+    
+    - name: package.json
+      path : /app/package.json
+      shouldExist : true
+
+    - name: package-lock.json
+      path : /app/package-lock.json
+      shouldExist : true
+
     - name : src directory
-      path : /src
+      path : /app/src
       shouldExist : false
 
     - name : venv directory
-      path : /.venv
+      path : /app/.venv
       shouldExist : false
 
     - name : Dockerfile
