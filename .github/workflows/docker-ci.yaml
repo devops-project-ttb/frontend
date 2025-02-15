@@ -1,0 +1,31 @@
+name: Build and push docker image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build the frontend docker image
+        run: docker build -f Dockerfile -t ghcr.io/devops-project-ttb/frontend:latest .
+
+      - name: Install and run Container Structure Tests for Frontend
+        run: |
+          curl -LO https://github.com/GoogleContainerTools/container-structure-test/releases/latest/download/container-structure-test-linux-amd64
+          chmod +x container-structure-test-linux-amd64
+          sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
+          container-structure-test test --image ghcr.io/devops-project-ttb/frontend:latest --config tests/cst.yaml
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u devops-project-ttb --password-stdin
+        
+
+      - name: Push the Frontend Docker image
+        run: docker push ghcr.io/devops-project-ttb/frontend:latest

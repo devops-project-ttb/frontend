@@ -1,0 +1,28 @@
+---
+schemaVersion: 2.0.0
+
+fileExistenceTests:
+    - name: dist directory
+      path: /dist
+      shouldExist: true
+
+    - name : src directory
+      path : /src
+      shouldExist : false
+
+    - name : venv directory
+      path : /.venv
+      shouldExist : false
+
+    - name : Dockerfile
+      path : /Dockerfile
+      shouldExist : false
+
+    
+commandTests:
+    - name: node version
+      command: node
+      args: [--version]
+      expectedOutput: ["v16\\..*"] 
+
+
