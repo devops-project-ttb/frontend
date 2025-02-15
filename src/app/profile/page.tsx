@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import NavBar from "../../../components/NavBar"; 
 
 const Profile = () => {
   return (
@@ -53,7 +52,7 @@ const Profile = () => {
             </li>
           </ul>
           <button className="mt-4 px-6 py-2 bg-[#FFCF82] text-white rounded-md hover:bg-[#e2c872]">
-            Voir l'historique complet
+            Voir l&apos;historique complet
           </button>
         </section>
 

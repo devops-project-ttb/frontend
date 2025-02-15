@@ -1,14 +1,14 @@
 import { FC, useState } from "react";
+import Image from "next/image";
 
 interface FicheTechniqueModalProps {
-  isModalOpen: boolean;  // Contrôle si le modal est ouvert ou fermé
-  closeModal: () => void; // Fonction pour fermer le modal
+  isModalOpen: boolean; 
+  closeModal: () => void; 
 }
 
 const FicheTechniqueModal: FC<FicheTechniqueModalProps> = ({ isModalOpen, closeModal }) => {
   const [startY, setStartY] = useState(0);
 
-  // Gestion du glissement vers le bas pour fermer le modal
   const handleTouchStart = (e: React.TouchEvent) => {
     setStartY(e.touches[0].clientY);
   };
@@ -36,14 +36,15 @@ const FicheTechniqueModal: FC<FicheTechniqueModalProps> = ({ isModalOpen, closeM
         <h2 className="text-4xl font-bold text-[#571212] text-center mb-4">Fiche Technique</h2>
 
         <div className="text-center">
-          <img
+          <Image
             src="/vin.jpg"
             alt="Image de vin"
-            className="mx-auto max-w-[130px] h-auto rounded-lg border-4 border-[#571212]"
-          />
+            width={130}
+            height={130}
+            className="mx-auto max-w-[130px] h-auto rounded-lg border-4 border-[#571212]">
+          </Image>
         </div>
 
-        {/* Conteneur avec overflow pour le scroll */}
         <div className="overflow-y-auto mt-5">
           <p className="text-lg text-gray-700">Nom du produit : Bonne Nouvelle</p>
           <p className="mt-5 text-lg text-gray-700">Type de vin : Vin rouge désalcoolisé</p>

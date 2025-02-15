@@ -1,21 +1,16 @@
 "use client";
 
-import { useCamera } from "../../context/CameraContext";
+import { useCamera } from "../context/CameraContext";
 import { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import NavBar from "../../components/NavBar";
-import FicheTechniqueModal from "../../components/FicheTechnique";
-import Image from "next/image";
-import Link from "next/link";
+import NavBar from "../components/NavBar";
+import FicheTechniqueModal from "../components/FicheTechnique";
 
 export default function Home() {
-  const { isCameraOpen, photo, openCamera, setIsCameraOpen, setPhoto } = useCamera();
+  const { isCameraOpen,  setIsCameraOpen, setPhoto } = useCamera();
   const videoRef = useRef<HTMLVideoElement>(null); 
   const canvasRef = useRef<HTMLCanvasElement>(null); 
-  const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false); // Etat pour afficher le modal
-  const [loading, setLoading] = useState(false); // Etat pour afficher le chargement
-  // Fonction pour démarrer la caméra
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -29,7 +24,6 @@ export default function Home() {
     }
   };
 
-  // Fonction pour fermer la caméra
   const closeCamera = () => {
     setIsCameraOpen(false);
     setPhoto(null);
@@ -43,25 +37,23 @@ export default function Home() {
     }
   };
 
-  // Fonction pour capturer la photo et afficher le modal après un délai
   const capturePhoto = () => {
     if (canvasRef.current && videoRef.current) {
       const context = canvasRef.current.getContext("2d");
       if (context) {
         context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
         const dataUrl = canvasRef.current.toDataURL("image/png");
-        setPhoto(dataUrl); // Mise à jour de l'image capturée
+        setPhoto(dataUrl);
       }
 
    
-        closeCamera(); // Ferme la caméra après avoir pris la photo
-        setIsModalOpen(true); // Affiche le modal après 5 secondes
+        closeCamera(); 
+        setIsModalOpen(true); 
     
 
     }
   };
 
-  // Démarrer la caméra si elle est ouverte
   if (isCameraOpen) {
     startCamera();
   }
@@ -69,30 +61,12 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center max-h-screen relative">
       <div className="absolute top-[70vh]">
-      <nav className="relative flex px-[6vw] items-center h-[10vh] w-[80vw] bg-[#FFCF82] shadow-md rounded-[20px]">
-      <div className="flex justify-between items-center w-full mx-auto relative">
-        <Image src="/HomeIcon.svg" alt="Home Icon" width={32} height={32} />
-
-        <div className="absolute bottom-[-4.5vh] left-1/2 transform -translate-x-1/2 flex items-center justify-center w-[25vw] h-[14.5vh] rounded-full border-2 border-[#FFCF82] bg-white">
-          {loading ? (
-            <div className="text-center text-xl font-semibold">Chargement...</div>
-          ) : (
-            <Image src="/PhotoIcon.svg" alt="Photo Icon" width={50} height={50} onClick={openCamera} />
-          )}
-        </div>
-
-        <Link href="/profile">
-          <div className="flex items-center">
-            <Image src="/ProfileIcon.svg" alt="Profile Icon" width={40} height={40} />
-          </div>
-        </Link>
-      </div>
-    </nav>
+        <NavBar/>
       </div>  
 
       {!isCameraOpen && (
-        <div className="w-[50vw] mt-[14vh]">
-          <h1 className="text-[2.1rem] font-bold text-[#626264] text-center">
+        <div className="w-[50vw] mt-[14vh] md:w-[50vw]">
+          <h1 className="text-[2.1rem] md:text-[4rem] font-bold text-[#626264] text-center">
             Clique sur le bouton et scanne ton étiquette !
           </h1>
         </div>
