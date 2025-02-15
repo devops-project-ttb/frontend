@@ -35,6 +35,4 @@ commandTests:
     - name: node version
       command: node
       args: [--version]
-      expectedOutput: ["v20.0.0\\..*"] 
-
-
+      expectedOutput: ["v20.0.0"]
