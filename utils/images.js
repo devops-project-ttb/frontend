@@ -1,7 +1,7 @@
 export const analyzeImage = async (imageUrl) => {
     console.log('on est dans la bonne fonction')
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/images/analyze`, {
+      const response = await fetch(`${process.env.BACKEND_URL}/images/analyze`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
