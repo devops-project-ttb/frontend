@@ -1,101 +1,82 @@
 "use client";
 
-import { useCamera } from "../context/CameraContext";
-import { useRef, useState } from "react";
-import NavBar from "../components/NavBar";
-import FicheTechniqueModal from "../components/FicheTechnique";
+import { useState } from "react";
+import { loginUser } from "../../utils/auth";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext"; 
 
-export default function Home() {
-  const { isCameraOpen,  setIsCameraOpen, setPhoto } = useCamera();
-  const videoRef = useRef<HTMLVideoElement>(null); 
-  const canvasRef = useRef<HTMLCanvasElement>(null); 
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+  const { setUserData } = useAuth(); 
 
-  const startCamera = async () => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-      });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-    } catch (error) {
-      console.error("Erreur d'accès à la caméra", error);
+      const token = await loginUser(email, password);
+
+      localStorage.setItem("token", token); // Stocke le token
+      setUserData(email); // Met à jour le contexte avec l'email de l'utilisateur
+      console.log("Connexion réussie !", email);
+
+      router.replace("/home"); // Redirige vers la page d'accueil
+    } catch (err: any) {
+      setError(err.message);
     }
   };
-
-  const closeCamera = () => {
-    setIsCameraOpen(false);
-    setPhoto(null);
-    if (videoRef.current) {
-      if (videoRef.current.srcObject instanceof MediaStream) {
-        const stream = videoRef.current.srcObject;
-        const tracks = stream.getTracks();
-        tracks.forEach((track) => track.stop());
-        videoRef.current.srcObject = null;
-      }
-    }
-  };
-
-  const capturePhoto = () => {
-    if (canvasRef.current && videoRef.current) {
-      const context = canvasRef.current.getContext("2d");
-      if (context) {
-        context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-        const dataUrl = canvasRef.current.toDataURL("image/png");
-        setPhoto(dataUrl);
-      }
-
-   
-        closeCamera(); 
-        setIsModalOpen(true); 
-    
-
-    }
-  };
-
-  if (isCameraOpen) {
-    startCamera();
-  }
 
   return (
     <div className="flex flex-col items-center max-h-screen relative">
-      <div className="absolute top-[70vh]">
-        <NavBar/>
-      </div>  
+      <div className="w-[50vw] mt-[14vh] md:w-[50vw]">
+        <h1 className="text-[2.1rem] md:text-[4rem] font-bold text-[#626264] text-center">
+          Connecte-toi à ton compte
+        </h1>
+      </div>
 
-      {!isCameraOpen && (
-        <div className="w-[50vw] mt-[14vh] md:w-[50vw]">
-          <h1 className="text-[2.1rem] md:text-[4rem] font-bold text-[#626264] text-center">
-            Clique sur le bouton et scanne ton étiquette !
-          </h1>
-        </div>
-      )}
-
-      {isCameraOpen && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="relative">
-            <video
-              ref={videoRef}
-              autoPlay
-              className="border-4 border-[#FFCF82] rounded-lg"
-              width="320"
-              height="240"
+      <div className="w-full max-w-md mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg">
+        <form onSubmit={handleLogin} className="flex flex-col space-y-6">
+          <div>
+            <label htmlFor="email" className="text-lg text-[#626264]">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-3 mt-2 border border-[#ccc] rounded-md"
+              placeholder="Entrez votre email"
             />
-            <canvas ref={canvasRef} width="320" height="240" style={{ display: 'none' }} />
-            <button
-              onClick={capturePhoto}
-              className="absolute top-[40vh] left-1/2 transform -translate-x-1/2 px-6 py-2 bg-[#FFCF82] text-white rounded-md"
-            >
-              Prendre la photo
-            </button>
           </div>
-        </div>
-      )}
 
-    <FicheTechniqueModal isModalOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
-     
+          <div>
+            <label htmlFor="password" className="text-lg text-[#626264]">
+              Mot de passe
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-3 mt-2 border border-[#ccc] rounded-md"
+              placeholder="Entrez votre mot de passe"
+            />
+          </div>
+
+          {error && <p className="text-red-500 text-center">{error}</p>}
+
+          <button
+            type="submit"
+            className="py-3 bg-[#FFCF82] text-white font-semibold rounded-md mt-4"
+          >
+            Se connecter
+          </button>
+        </form>
+      </div>
     </div>
-    
   );
 }

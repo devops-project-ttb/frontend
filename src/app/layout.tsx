@@ -1,6 +1,7 @@
 import { Lobster } from 'next/font/google'; 
 import './globals.css';
 import { CameraProvider } from '../context/CameraContext';
+import { AuthProvider } from '@/context/AuthContext';
 
 const lobster = Lobster({
   subsets: ['latin'],
@@ -14,6 +15,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
+    <AuthProvider>
     <CameraProvider>
     <html lang="fr">
       <body className={`${lobster.className} bg-[#FCFCFC]`}>
@@ -25,5 +27,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </body>
     </html>
     </CameraProvider>
+    </AuthProvider>
   );
 }

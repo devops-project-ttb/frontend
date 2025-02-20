@@ -1,12 +1,14 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
 const Profile = () => {
+  const {userData} = useAuth()
   return (
     <div className="bg-[#FCFCFC] min-h-screen p-8 pb-[10vh]">
       <div className="absolute top-[2vh] left-[2vw]">
-        <Link href="/">
+        <Link href="/home">
           <Image src="/chevron-left.svg" alt="Retour" width={50} height={50} />
         </Link>
       </div>
@@ -30,7 +32,7 @@ const Profile = () => {
         <section className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-[#FFCF82] mb-4">Informations Personnelles</h2>
           <p className="text-lg text-[#626264]">Nom : Jean Dupont</p>
-          <p className="text-lg text-[#626264]">Email : jean.dupont@example.com</p>
+          <p className="text-lg text-[#626264]">Email : {userData}</p>
           <p className="text-lg text-[#626264]">Date de naissance : 12 janvier 1990</p>
           <button className="mt-4 px-6 py-2 bg-[#FFCF82] text-white rounded-md hover:bg-[#e2c872]">
             Modifier les informations
