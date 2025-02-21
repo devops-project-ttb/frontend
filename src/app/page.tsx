@@ -31,14 +31,11 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col items-center max-h-screen relative">
-      <div className="w-[50vw] mt-[14vh] md:w-[50vw]">
+    <div className="max-h-screen">
+      <div className="mt-16 mx-4 bg-white p-8 rounded-lg shadow-lg border border-solid border-[#FFCF82] ">
         <h1 className="text-[2.1rem] md:text-[4rem] font-bold text-[#626264] text-center">
           Connecte-toi à ton compte
         </h1>
-      </div>
-
-      <div className="w-full max-w-md mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg">
         <form onSubmit={handleLogin} className="flex flex-col space-y-6">
           <div>
             <label htmlFor="email" className="text-lg text-[#626264]">
