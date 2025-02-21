@@ -1,7 +1,7 @@
 export const analyzeImage = async (imageUrl) => {
     console.log('on est dans la bonne fonction')
     try {
-      const response = await fetch(`http://backend:5000/images/analyze`, {
+      const response = await fetch(`http://localhost:5000/images/analyze`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
